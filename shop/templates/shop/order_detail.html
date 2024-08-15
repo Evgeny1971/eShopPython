@@ -1,42 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Order Detail</title>
+    <title>Request Details</title>
     {% load static %}
+
     <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
 </head>
 <body>
-    <h1>Order Detail</h1>
-    <p><strong>Customer Address:</strong> {{ order.customer_address }}</p>
-    <p><strong>Order Details:</strong> {{ order.order_details }}</p>
-    <p><strong>Order Date:</strong> {{ order.order_date }}</p>
-    {% if order.uploaded_file %}
-    <p><strong>Uploaded File:</strong> <a href="{{ order.uploaded_file.url }}" download>Download</a></p>
-    <p><strong>View File:</strong> <a href="{{ order.uploaded_file.url }}" target="_blank">View</a></p>
-    {% else %}
-    <p>No file uploaded.</p>
-    {% endif %}
+    <h1>Request Details</h1>
+    <form method="post" enctype="multipart/form-data">
+        {%logger.debug(f"Order producer_category: {order.id, order.quantity, order.producer_category}")
 
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Order Detail</title>
-    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
-</head>
-<body>
-    <h1>Order Detail</h1>
-    <p><strong>Customer Address:</strong> {{ order.customer_address }}</p>
-    <p><strong>Order Details:</strong> {{ order.order_details }}</p>
-    <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+            %}
+        
+        <h3>Producer Categories</h3>
+        {% for value, label in order.producer_category.field.choices %}
 
-    {% if order.uploaded_file %}
-    <p><strong>Uploaded File:</strong> <a href="{{ order.uploaded_file.url }}" download>Download</a></p>
-    <p><strong>View File:</strong> <a href="{{ order.uploaded_file.url }}" target="_blank">View</a></p>
-    {% else %}
-    <p>No file uploaded.</p>
-    {% endif %}
+            <label>
+                <input type="radio" name="producer_category" value="{{ value }}"{% if order.producer_category == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+        <p><strong>Producer Category:</strong> {{ order.get_producer_category_display }}</p>
 
+        <h3>Producer Categories</h3>
+        {% for value, label in order.PRODUCER_CATEGORIES %}
+            <label>
+                <input type="radio" name="producer_category" value="{{ value }}"{% if order.producer_category == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+
+        <h3>Budget Range</h3>
+        {% for value, label in order.budget_range.field.choices %}
+            <label>
+                <input type="radio" name="budget_range" value="{{ value }}"{% if order.budget_range == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+
+        <h3>Quantity</h3>
+        {{ order.quantity }}
+
+        <h3>Email</h3>
+        {{ order.customer_email }}
+
+        <h3>Payment Methods</h3>
+        {% for value, label in order.payment_method.field.choices %}
+            <label>
+                <input type="radio" name="payment_method" value="{{ value }}"{% if order.payment_method == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+
+        <h3>Source of Materials for Work</h3>
+        {% for value, label in order.material_source.field.choices %}
+            <label>
+                <input type="radio" name="material_source" value="{{ value }}"{% if order.material_source == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+
+        <h3>Delivery Options</h3>
+        {% for value, label in order.delivery_option.field.choices %}
+            <label>
+                <input type="radio" name="delivery_option" value="{{ value }}"{% if order.delivery_option == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
+
+        <h3>Delivery Deadlines</h3>
+        {{ order.delivery_deadline }}
+
+        <h3>Agreement Conditions</h3>
+        <label>{{ order.agree_to_penalties }} I agree to the penalties stipulated for delivery delays.</label><br>
+        <label>{{ order.agree_to_bonuses }} I agree to receive bonuses for early delivery.</label><br>
+        <label>{{ order.agree_to_arbitrator }} I agree to the appointment of an arbitrator for disputes.</label><br>
+
+        <h3>File Attachment</h3>
+        {{ order.file_attachments }}<br>
+        <label>Count:</label> {{ order.file_count }}
+
+        <h3>Additional Information</h3>
+        {{ order.additional_information }}
+
+        <h3>Shipping Address</h3>
+        <label>Address: </label>{{ order.shipping_address }}<br>
+        <label>City: </label>{{ order.city }}<br>
+        <label>State: </label>{{ order.state }}<br>
+
+    </form>
 </body>
 </html>

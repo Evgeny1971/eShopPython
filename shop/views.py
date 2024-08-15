@@ -5,8 +5,11 @@ from .models import Product
 from .forms import ProductForm
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Order
-from .forms import OrderForm
+from .models import OrderRequest
+from .forms import OrderRequestForm
+from django.urls import reverse
+import logging
+logger = logging.getLogger(__name__)
 
 
 def product_list(request):
@@ -25,18 +28,20 @@ def product_upload(request):
 
 def create_order(request):
     if request.method == 'POST':
-        form = OrderForm(request.POST, request.FILES)  # Include request.FILES to handle file upload
+        form = OrderRequestForm(request.POST, request.FILES)  # Include request.FILES to handle file upload
+        print(f"form.is_valid(): {form.is_valid()}")
+
         if form.is_valid():
             order = form.save()
             # order = form.save(commit=False)  # Do not commit immediately
-            uploaded_file = request.FILES.get('uploaded_file')
+            file_attachments = request.FILES.get('file_attachments')
             print(f"request.FILES: {request.FILES}")
 
-            if uploaded_file:
+            if file_attachments:
                 # Display file details for testing
-                file_name = uploaded_file.name
-                file_size = uploaded_file.size
-                file_type = uploaded_file.content_type
+                file_name = file_attachments.name
+                file_size = file_attachments.size
+                file_type = file_attachments.content_type
 
                 # Here you can print the details to the console or log them
                 print(f"Uploaded File Name: {file_name}")
@@ -50,22 +55,33 @@ def create_order(request):
                     [settings.EMAIL_HOST_USER,'vika.vinnikov@gmail.com'],  # Replace with the actual manufacturer's email
                 )
 
-                # return redirect('order_detail', pk=order.pk)
-                return redirect('order_detail', pk=order.pk)
-                # Save the order and redirect as usual
-                # order.save()
+            # return redirect('order_detail', pk=order.pk)
+            # return redirect('order_detail', pk=order.pk)
+            return redirect(reverse('order_detail', args=[order.id]))
+        
+            # Save the order and redirect as usual
+            # order.save()
+        else:
+            # Print errors to the console for debugging
+            print("Form errors:", form.errors.as_json())  # JSON format
+            print("Form non-field errors:", form.non_field_errors())  # Non-field errors
 
-    else:
-        form = OrderForm()
+            # Optionally, pass errors to the template to display to the user
+            return render(request, 'shop/create_order.html', {'form': form})
+
+    form = OrderRequestForm()
     return render(request, 'shop/create_order.html', {'form': form})
 
 
 def order_detail(request, pk):
-    order = get_object_or_404(Order, pk=pk)
+    logger.debug(f"Fetching order with pk={pk}")
+    order = get_object_or_404(OrderRequest, pk=pk)
+    logger.debug(f"Order fetched: {order.id, order.quantity, order.budget_range}")
+
     return render(request, 'shop/order_detail.html', {'order': order})
 
 def send_order_email(request, pk):
-    order = get_object_or_404(Order, pk=pk)
+    order = get_object_or_404(OrderRequest, pk=pk)
     order_link = request.build_absolute_uri(f'/order/{order.id}/')
 
     # Send an email to the manufacturer

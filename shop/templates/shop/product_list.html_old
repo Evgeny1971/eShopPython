@@ -1,49 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product List - Metalworking</title>
+    <title>Create Order</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <img src="{% static 'shop/images/logo.png' %}" alt="Logo">
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'product_list' %}">Home</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Services</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <h1>Create an Order</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <main>
-        <div class="container">
-            <h2>Our Products</h2>
-            <div class="product-grid">
-                {% for product in products %}
-                <div class="product-card">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                    <h3>{{ product.name }}</h3>
-                    <p>{{ product.description }}</p>
-                    <p class="price">${{ product.price }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </main>
+        <button type="submit">Send Request</button>
+        
+        <h3>Producer Categories</h3>
+        {% for value, label in form.producer_category.field.choices %}
+            <label>
+                <input type="radio" name="producer_category" value="{{ value }}"{% if form.producer_category.value == value %} checked{% endif %}>
+                {{ label }}
+            </label><br>
+        {% endfor %}
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Metalworking Co. All rights reserved.</p>
-        </div>
-    </footer>
+        <!-- Additional form fields -->
+
+        {% if form.non_field_errors %}
+            <ul>
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+
+    </form>
 </body>
 </html>

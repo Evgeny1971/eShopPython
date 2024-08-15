@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Detail</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
+</head>
+<body>
+    <h1>Order Detail</h1>
+    <p><strong>Customer Address:</strong> {{ order.shipping_address }}</p>
+    <p><strong>Order Details:</strong> {{ order.city }}</p>
+    <p><strong>Order Date:</strong> {{ order.state }}</p>
+    {% if order.file_attachments %}
+    <p><strong>Uploaded File:</strong> <a href="{{ order.file_attachments.url }}" download>Download</a></p>
+    <p><strong>View File:</strong> <a href="{{ order.file_attachments.url }}" target="_blank">View</a></p>
+    {% else %}
+    <p>No file uploaded.</p>
+    {% endif %}
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Detail</title>
+    <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
+</head>
+<body>
+    <h1>Order Detail</h1>
+    <p><strong>Customer Address:</strong> {{ order.shipping_address }}</p>
+    <p><strong>Order Details:</strong> {{ order.city }}</p>
+    <p><strong>Order Date:</strong> {{ order.state }}</p>
+
+    {% if order.file_attachments %}
+    <p><strong>Uploaded File:</strong> <a href="{{ order.file_attachments.url }}" download>Download</a></p>
+    <p><strong>View File:</strong> <a href="{{ order.file_attachments.url }}" target="_blank">View</a></p>
+    {% else %}
+    <p>No file uploaded.</p>
+    {% endif %}
+
+</body>
+</html>
