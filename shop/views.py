@@ -40,7 +40,10 @@ def create_order(request):
                 'New Order Submitted',
                 f'An order has been submitted. View it here: {order_link}',
                 settings.DEFAULT_FROM_EMAIL,
-                [settings.EMAIL_HOST_USER,'vika.vinnikov@gmail.com'],  # Replace with the actual manufacturer's email
+                [settings.EMAIL_HOST_USER,
+                 'vika.vinnikov@gmail.com',
+                 'V0508258626@gmail.com'
+],  # Replace with the actual manufacturer's email
             )
             return redirect('order_detail', pk=order.pk)
             #return redirect(reverse('order_detail', args=[order.id]))

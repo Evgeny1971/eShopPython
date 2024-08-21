@@ -3921,3 +3921,4 @@ django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '
 [2024-08-21 05:50:40] DEBUG [shop.views:65] Order fetched: (48, 1, 2)
 [2024-08-21 05:50:47] DEBUG [shop.views:71] Order file_price: 98.00
 [2024-08-21 05:51:22] DEBUG [shop.views:71] Order file_price: 98.00
+[2024-08-21 06:56:47] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
