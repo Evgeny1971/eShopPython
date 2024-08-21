@@ -1,3 +1,4 @@
+    <h1>Order Detail</h1>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +27,6 @@
     <link rel="stylesheet" href="{% static 'shop/css/styles.css' %}">
 </head>
 <body>
-    <h1>Order Detail</h1>
     <p><strong>Customer Address:</strong> {{ order.shipping_address }}</p>
     <p><strong>Order Details:</strong> {{ order.city }}</p>
     <p><strong>Order Date:</strong> {{ order.state }}</p>

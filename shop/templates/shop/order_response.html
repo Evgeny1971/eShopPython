@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Order Detail{% endblock %}
+{% block title %}
+<h1>Home - eMetalworking</h1>
+
+{% endblock %}
 
 {% block content %}
-
-  <div class="container
-  sb-container-fixed
-  sb-container">
-      <h1>Order details saved and sent to the manufacturer.</h1>
-      <div class="order-details">
-        
-          <div class="sb-section-title aos-init aos-animate">Producer Categories</div>
+    <div class="container
+                  sb-container-fixed
+                  sb-container">
+        <!--htmlhint spec-char-escape:false -->
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+               
+          <h2>Order details came from the customer: <button type="submit">Send Confirmation Email</button>
+          </h2>
+  
+        <h3>Producer Categories</h3>
           {% for value, label in order.PRODUCER_CATEGORIES %}
               <label>
                   <input type="radio" name="producer_category" value="{{ value }}" {% if order.producer_category == value %}checked{% endif %}>
@@ -18,7 +24,7 @@
               </label><br>
           {% endfor %}
   
-          <h3>Budget Range</h3>
+        <h3>Budget Range</h3>
           {% for value, label in order.BUDGET_RANGES %}
               <label>
                   <input type="radio" name="budget_range" value="{{ value }}" {% if order.budget_range == value %}checked{% endif %}>
@@ -26,7 +32,7 @@
               </label><br>
           {% endfor %}
   
-          <h3>Payment Methods</h3>
+        <h3>Payment Methods</h3>
           {% for value, label in order.PAYMENT_METHODS %}
               <label>
                   <input type="radio" name="payment_method" value="{{ value }}" {% if order.payment_method == value %}checked{% endif %}>
@@ -41,13 +47,13 @@
                   {{ label }}
               </label><br>
           {% endfor %}
-    
-          <!-- Continue with other fields as needed -->
-  
-          <h3>Quantity</h3>  <p>{{ order.quantity }}</p>
-  
-          <h3>Email</h3>    <p>{{ order.customer_email }}</p>
-
+      
+          <h3>Quantity</h3>
+          {{ order.quantity }}
+      
+          <h3>Email</h3>
+          {{ order.customer_email }}
+      
           <h3>Delivery Options</h3>
           {% for value, label in order.DELIVERY_OPTIONS %}
               <label>
@@ -55,38 +61,35 @@
                   {{ label }}
               </label><br>
           {% endfor %}
-
-          
-          <h3>Delivery Deadline</h3>
-          <p>{{ order.delivery_deadline }}</p>
-
-     <div class="form-section">
-  
+      
+          <h3>Delivery Deadlines</h3>
+          {{ order.delivery_deadline }}
+      
+          <h3>Agreement Conditions</h3>
+          <label>{{ form.agree_to_penalties }} I agree to the penalties stipulated for delivery delays.</label><br>
+          <label>{{ order.agree_to_bonuses }} I agree to receive bonuses for early delivery.</label><br>
+          <label>{{ order.agree_to_arbitrator }} I agree to the appointment of an arbitrator for disputes.</label><br>
+      
           {% if order.file_attachments %}
           <h3>File Attachment</h3>
           <p>{{ order.file_attachments }}
           <strong>Uploaded File:</strong> <a href="{{ order.file_attachments.url }}" download>Download</a>
           <strong>View File:</strong> <a href="{{ order.file_attachments.url }}" target="_blank">View</a>
-          <label><strong>Count:</strong></label> {{ order.file_count }}</p>
+          <label><strong>Count:</strong></label> {{ order.file_count }}
+          <label><strong>Price ($):</strong></label>
+          <input type="number" name="file_price" value="{{ order.file_price }}" class="input-field" step="0.01">  <!-- Ensure step matches the decimal places -->     
+        </p>
           {% else %}
           <p>No file uploaded.</p>
           {% endif %}
-     </div>
-          <h3>Agreement Conditions</h3>
-          <label>{{ order.agree_to_penalties }} I agree to the penalties stipulated for delivery delays.</label><br>
-          <label>{{ order.agree_to_bonuses }} I agree to receive bonuses for early delivery.</label><br>
-          <label>{{ order.agree_to_arbitrator }} I agree to the appointment of an arbitrator for disputes.</label><br>
-  
+     
           <h3>Additional Information</h3>
-          <p>{{ order.additional_information }}</p>
-  
+          {{ order.additional_information }}
+      
           <h3>Shipping Address</h3>
           <label>Address: </label>{{ order.shipping_address }}<br>
           <label>City: </label>{{ order.city }}<br>
           <label>State: </label>{{ order.state }}<br>
-  
-
-        </div>
-  
-      <!-- Optionally, add buttons for editing or further actions -->
+        </form>
+    </div>
 {% endblock %}

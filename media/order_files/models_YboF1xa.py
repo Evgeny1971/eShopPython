@@ -1,7 +1,6 @@
 # shop/models.py
 from django.db import models
 from django.utils import timezone
-from decimal import Decimal
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -56,8 +55,6 @@ class OrderRequest(models.Model):
     additional_information = models.TextField(blank=True)
     file_attachments = models.FileField(upload_to='order_files/', null=True, blank=True)
     file_count = models.PositiveIntegerField(default=1)  # New field for file count
-    file_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))  # Add file_price field
-
     shipping_address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)

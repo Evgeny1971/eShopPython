@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1>Home - eMetalworking</h1>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container
+                  sb-container-fixed
+                  sb-container">
+        <!--htmlhint spec-char-escape:false -->
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+      
+          <button type="submit">Send Request</button>
+          
+          <h3>Producer Categories</h3>
+          {% for value, label in form.producer_category.field.choices %}
+              <label>
+                  <input type="radio" name="producer_category" value="{{ value }}"{% if form.producer_category.value == value %} checked{% endif %}>
+                  {{ label }}
+              </label><br>
+          {% endfor %}
+      
+          <h3>Budget Range</h3>
+          {% for value, label in form.budget_range.field.choices %}
+              <label>
+                  <input type="radio" name="budget_range" value="{{ value }}"{% if form.budget_range.value == value %} checked{% endif %}>
+                  {{ label }}
+              </label><br>
+          {% endfor %}
+      
+          <h3>Quantity</h3>
+          {{ form.quantity }}
+      
+          <h3>Email</h3>
+          {{ form.customer_email }}
+      
+          <h3>Payment Methods</h3>
+          {% for value, label in form.payment_method.field.choices %}
+              <label>
+                  <input type="radio" name="payment_method" value="{{ value }}"{% if form.payment_method.value == value %} checked{% endif %}>
+                  {{ label }}
+              </label><br>
+          {% endfor %}
+      
+          <h3>Source of Materials for Work</h3>
+          {% for value, label in form.material_source.field.choices %}
+              <label>
+                  <input type="radio" name="material_source" value="{{ value }}"{% if form.material_source.value == value %} checked{% endif %}>
+                  {{ label }}
+              </label><br>
+          {% endfor %}
+      
+          <h3>Delivery Options</h3>
+          {% for value, label in form.delivery_option.field.choices %}
+              <label>
+                  <input type="radio" name="delivery_option" value="{{ value }}"{% if form.delivery_option.value == value %} checked{% endif %}>
+                  {{ label }}
+              </label><br>
+          {% endfor %}
+      
+          <h3>Delivery Deadlines</h3>
+          {{ form.delivery_deadline }}
+      
+          <h3>Agreement Conditions</h3>
+          <label>{{ form.agree_to_penalties }} I agree to the penalties stipulated for delivery delays.</label><br>
+          <label>{{ form.agree_to_bonuses }} I agree to receive bonuses for early delivery.</label><br>
+          <label>{{ form.agree_to_arbitrator }} I agree to the appointment of an arbitrator for disputes.</label><br>
+      
+          <h3>File Attachment</h3>
+          {{ form.file_attachments }}<br>
+          <label>Count:</label> {{ form.file_count }}
+      
+          <h3>Additional Information</h3>
+          {{ form.additional_information }}
+      
+          <h3>Shipping Address</h3>
+          <label>Address: </label>{{ form.shipping_address }}<br>
+          <label>City: </label>{{ form.city }}<br>
+          <label>State: </label>{{ form.state }}<br>
+        </form>
+    </div>
+{% endblock %}

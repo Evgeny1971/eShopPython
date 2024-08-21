@@ -7,6 +7,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .models import OrderRequest
 from .forms import OrderRequestForm
+from .forms import OrderResponseForm
+
 from django.urls import reverse
 import logging
 logger = logging.getLogger(__name__)
@@ -33,31 +35,15 @@ def create_order(request):
 
         if form.is_valid():
             order = form.save()
-            # order = form.save(commit=False)  # Do not commit immediately
-            file_attachments = request.FILES.get('file_attachments')
-            print(f"request.FILES: {request.FILES}")
-
-            if file_attachments:
-                # Display file details for testing
-                file_name = file_attachments.name
-                file_size = file_attachments.size
-                file_type = file_attachments.content_type
-
-                # Here you can print the details to the console or log them
-                print(f"Uploaded File Name: {file_name}")
-                print(f"Uploaded File Size: {file_size} bytes")
-                print(f"Uploaded File Type: {file_type}")
-                order_link = request.build_absolute_uri(f'/order/{order.id}/')
-                send_mail(
-                    'New Order Submitted',
-                    f'An order has been submitted. View it here: {order_link}',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [settings.EMAIL_HOST_USER,'vika.vinnikov@gmail.com'],  # Replace with the actual manufacturer's email
-                )
-
-            # return redirect('order_detail', pk=order.pk)
-            # return redirect('order_detail', pk=order.pk)
-            return redirect(reverse('order_detail', args=[order.id]))
+            order_link = request.build_absolute_uri(f'/response/{order.id}/')
+            send_mail(
+                'New Order Submitted',
+                f'An order has been submitted. View it here: {order_link}',
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.EMAIL_HOST_USER,'vika.vinnikov@gmail.com'],  # Replace with the actual manufacturer's email
+            )
+            return redirect('order_detail', pk=order.pk)
+            #return redirect(reverse('order_detail', args=[order.id]))
         
             # Save the order and redirect as usual
             # order.save()
@@ -79,6 +65,39 @@ def order_detail(request, pk):
     logger.debug(f"Order fetched: {order.id, order.quantity, order.budget_range}")
 
     return render(request, 'shop/order_detail.html', {'order': order})
+
+def order_response(request, pk):
+    order = get_object_or_404(OrderRequest, pk=pk)
+    logger.debug(f"Order file_price: {order.file_price}")
+    
+    if request.method == 'POST':
+        form = OrderResponseForm(request.POST, request.FILES, instance=order)
+        logger.debug(f"form.is_valid()={form.is_valid()}")
+
+        if form.is_valid():
+            form.save()
+
+            # Prepare and send the confirmation email
+            order_link = request.build_absolute_uri(f'/response/{order.id}/')
+            subject = f"Order #{order.id} Updated"
+            message = f"Dear {order.customer_email},\n\nYour order has been updated successfully.\n\nDetails:\n\nProducer Category: {order.get_producer_category_display()}\nBudget Range: {order.get_budget_range_display()}\nQuantity: {order.quantity}\n\nThank you for using our service! {order_link}"
+            recipient_list = [order.customer_email]
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,
+                recipient_list,  # Replace with the actual manufacturer's email
+            )
+            # Redirect back to the same page
+            logger.debug(f"Order file_price: {order.file_price}")
+            return redirect(reverse('order_response', args=[order.id]))
+        else:
+            logger.debug(f"form.errors={form.errors}")  # Log the errors to see what's causing the issue
+
+        form = OrderResponseForm(instance=order)
+
+    form = OrderResponseForm()
+    return render(request, 'shop/order_response.html', {'form': form, 'order': order})
 
 def send_order_email(request, pk):
     order = get_object_or_404(OrderRequest, pk=pk)

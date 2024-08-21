@@ -10,6 +10,17 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['name', 'price', 'description', 'image']
 
+class OrderResponseForm(forms.ModelForm):
+    class Meta:
+        model = OrderRequest
+        fields = [
+                    'producer_category',
+                    'budget_range',
+                    'payment_method',
+                    'material_source',
+                    'delivery_option',
+                    'file_price',  # Include file_price field
+                ]
 class OrderRequestForm(forms.ModelForm):
     producer_category = forms.ChoiceField(
         choices=OrderRequest.PRODUCER_CATEGORIES,

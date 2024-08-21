@@ -91,7 +91,7 @@ ROOT_URLCONF = 'eshop.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -173,3 +173,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'gen.vinnikov@gmail.com'
 EMAIL_HOST_PASSWORD = 'xqqb dniv wflp odec'
 DEFAULT_FROM_EMAIL = 'gen.vinnikov@gmail.com'
+# DEFAULT_FROM_EMAIL = 'eMetalworking <no-reply@emetalworking.com>'
+
