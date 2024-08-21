@@ -6,11 +6,15 @@ Create Order - eMetalworking
 
 {% block content %}
 <div class="container sb-container-fixed sb-container">
-    <h1>Create a New Order</h1>
 
     <!-- Order Form -->
     <form method="post" enctype="multipart/form-data" class="order-form">
         {% csrf_token %}
+        
+        <div class="form-section">
+            <h2>Create a New Order:&nbsp;<button type="submit" class="btn-primary">Send Request</button>
+            </h2>
+        </div>
 
         <div class="form-section">
             <h3>Producer Categories</h3>
@@ -19,7 +23,7 @@ Create Order - eMetalworking
                     <label class="radio-label">
                         <input type="radio" name="producer_category" value="{{ value }}" {% if form.producer_category.value == value %}checked{% endif %}>
                         {{ label }}
-                    </label>
+                    </label><br>
                 {% endfor %}
             </div>
         </div>
@@ -112,9 +116,6 @@ Create Order - eMetalworking
             <label>State:</label>{{ form.state }}
         </div>
         <br/>
-        <div class="form-section">
-            <button type="submit" class="btn-primary">Send Request</button>
-        </div>
     </form>
 </div>
 {% endblock %}
