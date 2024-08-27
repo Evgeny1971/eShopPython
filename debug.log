@@ -3998,3 +3998,40 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000
 [2024-08-22 17:07:29] WARNING [django.request:241] Not Found: /favicon.ico
 [2024-08-22 17:07:59] DEBUG [shop.views:66] Fetching order with pk=49
 [2024-08-22 17:07:59] DEBUG [shop.views:68] Order fetched: (49, 1, 1)
+[2024-08-22 17:10:57] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-22 17:19:51] DEBUG [shop.views:66] Fetching order with pk=49
+[2024-08-22 17:19:51] DEBUG [shop.views:68] Order fetched: (49, 1, 1)
+[2024-08-22 17:22:36] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-08-26 18:12:11] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:12:24] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-08-26 18:13:49] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:15:16] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/urls.py changed, reloading.
+[2024-08-26 18:15:17] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:15:22] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/urls.py changed, reloading.
+[2024-08-26 18:15:24] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:04] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:05] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:08] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:10] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:14] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:16] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:20] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:22] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:27] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:29] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:19:33] INFO [django.utils.autoreload:266] /workspaces/eShopPython/shop/views.py changed, reloading.
+[2024-08-26 18:19:35] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-26 18:20:27] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 04:09:55] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 04:10:06] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-08-27 04:20:54] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 04:26:30] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:03:28] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:13:30] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:22:17] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:26:49] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:40:16] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 05:51:47] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 11:33:25] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 11:57:26] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 12:02:44] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader

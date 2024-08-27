@@ -14,6 +14,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def index_api(request):
+    return render(request, 'shop/index_api.html')
+
 def product_list(request):
     products = Product.objects.all()  # Fetch all products
     return render(request, 'shop/product_list.html', {'products': products})
