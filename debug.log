@@ -4035,3 +4035,14 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000
 [2024-08-27 11:33:25] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
 [2024-08-27 11:57:26] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
 [2024-08-27 12:02:44] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 12:48:42] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-27 12:49:09] DEBUG [shop.views:69] Fetching order with pk=50
+[2024-08-27 12:49:09] DEBUG [shop.views:71] Order fetched: (50, 1, 1)
+[2024-08-27 12:49:32] DEBUG [shop.views:77] Order file_price: 0.00
+[2024-08-27 12:49:43] DEBUG [shop.views:77] Order file_price: 0.00
+[2024-08-27 12:49:43] DEBUG [shop.views:81] form.is_valid()=True
+[2024-08-27 12:49:45] DEBUG [shop.views:98] Order file_price: 45
+[2024-08-27 12:49:46] DEBUG [shop.views:77] Order file_price: 45.00
+[2024-08-27 12:49:56] DEBUG [shop.views:69] Fetching order with pk=50
+[2024-08-27 12:49:56] DEBUG [shop.views:71] Order fetched: (50, 1, 1)
+[2024-08-27 12:50:08] DEBUG [shop.views:77] Order file_price: 45.00
