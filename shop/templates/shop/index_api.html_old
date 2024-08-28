@@ -10,31 +10,73 @@
             height: 100%;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
         }
         #map {
-            height: 50%;
+            height: 45%;
             width: 100%;
         }
         #pano {
-            height: 50%;
+            height: 45%;
             width: 100%;
         }
         #info {
             padding: 10px;
             text-align: center;
+            background-color: #333;
+            color: white;
         }
+        /* Repositioned and styled status bar */
         #status {
-            margin-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
             font-weight: bold;
+            color: white;
+            background-color: #6c757d; /* Default gray color for initial message */
+            transition: background-color 0.5s ease-in-out;
+            z-index: 1000; /* Ensure visibility */
+            border-radius: 0 0 10px 10px; /* Rounded bottom corners */
+        }
+        /* Blinking effect for Bingo */
+        @keyframes blink {
+            0% { background-color: #ff9800; }
+            50% { background-color: #ffcc80; }
+            100% { background-color: #ff9800; }
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+        /* Button styling */
+        .start-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .start-btn:hover {
+            background-color: #218838;
         }
     </style>
 </head>
 <body>
     <div id="info">
         <h2>Welcome to the Van Gogh Quest</h2>
-        <p>Explore nearby museums and find the "Sunflowers" painting inside the Van Gogh Museum.</p>
-        <button onclick="startQuest()">Start Quest</button>
-        <div id="status"></div>
+        <button class="start-btn" onclick="startQuest()">Start Quest</button>
+    </div>
+    <div id="status">
+        Your journey begins with a search for one of the most vibrant symbols of life and energy in this artist’s work.
     </div>
     <div id="map"></div>
     <div id="pano"></div>
@@ -46,12 +88,13 @@
     <script>
         let map, panorama;
         let childMarker;
-        let targetLocation = { lat: 52.3584, lng: 4.8811 }; // Coordinates of Van Gogh Museum's "Sunflowers"
+        const targetLocation = { lat: 52.3584, lng: 4.8811 }; // Coordinates of Van Gogh Museum's "Sunflowers"
+        const startLocation = { lat: 52.3590, lng: 4.8850 }; // Initial start position
 
         function initMap() {
             // Initialize the map
             map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 52.3600, lng: 4.8850 }, // Center around Van Gogh Museum with nearby museums
+                center: startLocation, // Center around the initial position
                 zoom: 16, // Zoom level showing nearby museums
                 mapTypeId: 'roadmap'
             });
@@ -59,7 +102,7 @@
             // Initialize the Street View panorama
             panorama = new google.maps.StreetViewPanorama(
                 document.getElementById('pano'), {
-                    position: targetLocation,
+                    position: startLocation, // Initial position at start location
                     pov: {
                         heading: 34, // Adjust this to the correct orientation
                         pitch: 10
@@ -72,33 +115,37 @@
 
             // Create a custom marker representing the child
             childMarker = new google.maps.Marker({
-                position: targetLocation, // Initial position at the "Sunflowers" location
+                position: startLocation, // Start position
                 map: map,
-                title: "Child",
+                title: "Explorer",
                 icon: {
                     url: "https://img.icons8.com/color/48/000000/child.png", // Child icon
                     scaledSize: new google.maps.Size(40, 40) // Resize icon
                 }
             });
 
-            // Add markers for nearby museums
-            addNearbyMuseums();
-
             // Move child marker on map click
             map.addListener('click', function(event) {
                 moveChildMarker(event.latLng);
             });
+
+            // Trigger checkLocation when Street View position changes
+            panorama.addListener('position_changed', function() {
+                const position = panorama.getPosition();
+                moveChildMarker(position);
+            });
+
+            // Add markers for nearby museums
+            addNearbyMuseums();
         }
 
         function moveChildMarker(location) {
             childMarker.setPosition(location);
-            panorama.setPosition(location); // Move Street View to the new location
             checkLocation(location);
         }
 
         function startQuest() {
-            const status = document.getElementById('status');
-            status.innerText = "Navigate to the location of 'Sunflowers' painting.";
+            updateStatus("Challenge: Which painting captures the radiant beauty of nature’s golden flowers? Once you find it, approach the masterpiece to unlock your next clue.", "#007bff"); // Blue color for challenge
         }
 
         function checkLocation(currentLocation) {
@@ -107,12 +154,13 @@
                 new google.maps.LatLng(targetLocation.lat, targetLocation.lng)
             );
 
-            const status = document.getElementById('status');
-            if (distance < 50) { // 10 meters tolerance for indoor accuracy
-                status.innerText = "Bingo! You've found the 'Sunflowers'!";
+            if (distance > 200) {
+                updateStatus("Challenge: Which painting captures the radiant beauty of nature’s golden flowers? Once you find it, approach the masterpiece to unlock your next clue.", "#007bff"); // Blue color for challenge
+            } else if (distance <= 200 && distance > 50) {
+                updateStatus("Hint: If you’re close, you might notice a bouquet of sun-like flowers in a vase. Standing before it will reveal the next step in your quest.", "Green"); // Green color for hint
+            } else if (distance <= 50) {
+                updateStatus("Bingo! You've found 'Sunflowers.' Congratulations on unlocking the next clue—your journey through the vibrant world of this artist continues!", "#ff9800", true); // Orange color with blink for success
                 focusOnSunflowers();
-            } else {
-                status.innerText = "Keep searching...";
             }
         }
 
@@ -128,6 +176,17 @@
                 pitch: 0,
                 zoom: 1.5 // Slight zoom-in to focus on the painting
             });
+        }
+
+        function updateStatus(message, color, blink = false) {
+            const status = document.getElementById('status');
+            status.innerText = message;
+            status.style.backgroundColor = color; // Update background color
+            if (blink) {
+                status.classList.add('blink'); // Add blinking effect
+            } else {
+                status.classList.remove('blink'); // Remove blinking effect
+            }
         }
 
         function addNearbyMuseums() {

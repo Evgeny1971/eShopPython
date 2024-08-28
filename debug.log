@@ -4046,3 +4046,8 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000
 [2024-08-27 12:49:56] DEBUG [shop.views:69] Fetching order with pk=50
 [2024-08-27 12:49:56] DEBUG [shop.views:71] Order fetched: (50, 1, 1)
 [2024-08-27 12:50:08] DEBUG [shop.views:77] Order file_price: 45.00
+[2024-08-28 05:24:13] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-28 05:25:41] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-08-28 06:17:06] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-28 06:18:56] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-08-28 06:26:47] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
