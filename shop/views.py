@@ -13,6 +13,11 @@ from django.urls import reverse
 import logging
 logger = logging.getLogger(__name__)
 
+def index_admin(request):
+    return render(request, 'shop/index_admin.html')
+
+def user_mode(request):
+    return render(request, 'shop/index_admin/user-mode.html')
 
 def index_api(request):
     return render(request, 'shop/index_api.html')

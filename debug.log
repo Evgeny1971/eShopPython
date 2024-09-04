@@ -4051,3 +4051,60 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'localhost:8000
 [2024-08-28 06:17:06] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
 [2024-08-28 06:18:56] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
 [2024-08-28 06:26:47] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 08:41:02] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 08:41:23] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-09-04 08:55:06] INFO [django.utils.autoreload:266] /home/evgenyv/eshop/shop/urls.py changed, reloading.
+[2024-09-04 08:55:06] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 08:56:07] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 08:56:25] INFO [django.utils.autoreload:266] /home/evgenyv/eshop/shop/views.py changed, reloading.
+[2024-09-04 08:56:25] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 08:56:47] WARNING [django.request:241] Not Found: /index_admin/user-mode.html
+[2024-09-04 09:52:19] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 09:52:58] ERROR [django.request:241] Internal Server Error: /index_admin/user-mode.html
+Traceback (most recent call last):
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/evgenyv/eshop/shop/views.py", line 20, in user_mode
+    return render(request, 'index_admin/user-mode.html')
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: index_admin/user-mode.html
+[2024-09-04 09:56:19] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 09:57:12] ERROR [django.request:241] Internal Server Error: /index_admin/user-mode.html
+Traceback (most recent call last):
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/evgenyv/eshop/shop/views.py", line 20, in user_mode
+    return render(request, 'index_admin/user-mode.html')
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: index_admin/user-mode.html
+[2024-09-04 10:04:57] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-09-04 10:05:18] ERROR [django.request:241] Internal Server Error: /index_admin/user-mode.html
+Traceback (most recent call last):
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/evgenyv/eshop/shop/views.py", line 20, in user_mode
+    return render(request, 'index_admin/user-mode.html')
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "/home/evgenyv/eshop/venv/lib/python3.10/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: index_admin/user-mode.html
+[2024-09-04 10:07:38] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
