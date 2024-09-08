@@ -19,6 +19,12 @@ def index_admin(request):
 def user_mode(request):
     return render(request, 'shop/index_admin/user-mode.html')
 
+def index_shonbrunn(request):
+    return render(request, 'shop/index_shonbrunn.html')
+
+def user_mode_shonbrunn(request):
+    return render(request, 'shop/index_shonbrunn/user-mode.html')
+
 def index_api(request):
     return render(request, 'shop/index_api.html')
 
