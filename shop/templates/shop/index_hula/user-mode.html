@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest</title>
+    <style>
+        /* Basic styling */
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            scroll-behavior: smooth; /* Enable smooth scrolling */
+        }
+        #map {
+            height: 50%;
+            width: 100%;
+        }
+        #pano {
+            height: 50%;
+            width: 100%;
+        }
+        #info {
+            padding: 20px;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+        #status {
+            margin-top: 10px;
+            padding: 15px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background-color: #007bff; /* Base blue color */
+            transition: background-color 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            border-radius: 5px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 1;
+        }
+        /* Bottom-positioned status bar */
+        .bottom-status {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            margin: 0;
+            border-radius: 0 0 5px 5px;
+            z-index: 1000; /* Ensure it stays above other elements */
+        }
+        /* Blinking effect for Bingo */
+        @keyframes blink {
+            0% { background-color: #ff9800; }
+            50% { background-color: #ffcc80; }
+            100% { background-color: #ff9800; }
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+        /* Button styling */
+        .start-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .start-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .start-btn:hover:not(:disabled) {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h2>Your Quest Begins Here</h2>
+        <p>Explore the beauty of the Hula Valley and find the hidden treasure among its natural wonders.</p>
+        <div id="status">
+            <!-- Display the initial clue message from the URL parameter -->
+        </div>
+        <button id="start-btn" class="start-btn" onclick="startQuest()">Start Quest</button>
+    </div>
+    <div id="map"></div>
+    <div id="pano"></div>
+
+    <!-- Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuImtLS1A2933QJOZ-ScwDVeEfDYF9aSw&callback=initMap"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+        let map, panorama;
+        let childMarker;
+        let targetLocation, initialClue, challenge, hint, success;
+        let bflagSuccess = false;
+
+        function initMap() {
+            const params = new URLSearchParams(window.location.search);
+            targetLocation = { lat: parseFloat(params.get('lat')) || 33.0984, lng: parseFloat(params.get('lng')) || 35.5987 }; // Coordinates for Hula Valley
+            initialClue = params.get('initialClue') || "Your first clue: 'Wander through the natural beauty, where the wetlands hold the secrets of nature.' Can you find me? Click 'Start,' and then move the Street View marker to the quest location.";
+            challenge = params.get('challenge') || "Challenge: Explore the Hula Valley to find the hidden treasure among the natural wonders. Approach the correct area to unlock your next clue.";
+            hint = params.get('hint') || "Hint: If you’re close, you will be surrounded by vibrant wildlife and peaceful water bodies.";
+            success = params.get('success') || "Bingo! You've found the hidden location in the Hula Valley. Congratulations on unlocking the next clue!";
+
+            // Display the initial clue message immediately
+            document.getElementById('status').innerText = initialClue;
+            // 33.10021317689386 , 35.61131527214391
+            // { lat: 33.10021317689386, lng: 35.61131527214391 }
+            //33.10076001010768 , 35.608534812927246
+            const startLocation = { lat: 33.10076001010768, lng: 35.608534812927246 } ;// { lat: 33.095, lng: 35.594 }; // Start position: Near Hula Valley Nature Reserve
+            // Initialize the map
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: startLocation,
+                zoom: 16,
+                mapTypeId: 'roadmap'
+            });
+
+            // Initialize the Street View panorama
+            panorama = new google.maps.StreetViewPanorama(
+                document.getElementById('pano'), {
+                    position: startLocation,
+                    pov: { heading: 34, pitch: 10 },
+                    zoom: 1
+                });
+
+            // Link the map and panorama
+            map.setStreetView(panorama);
+
+            // Create a custom marker representing the explorer
+            childMarker = new google.maps.Marker({
+                position: startLocation,
+                map: map,
+                title: "Explorer",
+                icon: {
+                    url: "https://img.icons8.com/color/48/000000/child.png", // Child icon
+                    scaledSize: new google.maps.Size(40, 40) // Resize icon
+                }
+            });
+
+            // Move child marker on map click
+            map.addListener('click', function(event) {
+                moveChildMarker(event.latLng);
+            });
+
+            // Trigger checkLocation when Street View position changes
+            panorama.addListener('position_changed', function() {
+                const position = panorama.getPosition();
+                moveChildMarker(position);
+            });
+
+            // Add markers for nearby landmarks
+            addNearbyLandmarks();
+        }
+
+        function moveChildMarker(location) {
+            childMarker.setPosition(location);
+            checkLocation(location);
+        }
+
+        function startQuest() {
+            updateStatus(challenge, "#28a745"); // Green color for challenge
+            scrollToMap(); // Scroll down to the map and panorama
+            moveStatusBarToBottom(); // Move status bar to the bottom
+            disableStartButton(); // Disable the start button after it is clicked
+        }
+
+        function scrollToMap() {
+            const mapElement = document.getElementById('map');
+            mapElement.scrollIntoView({ behavior: 'smooth' }); // Smooth scroll to the map section
+        }
+
+        function moveStatusBarToBottom() {
+            const statusBar = document.getElementById('status');
+            statusBar.classList.add('bottom-status'); // Move the status bar to the bottom
+        }
+
+        function disableStartButton() {
+            const startBtn = document.getElementById('start-btn');
+            startBtn.disabled = true; // Disable the button
+        }
+
+        function checkLocation(currentLocation) {
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                currentLocation,
+                new google.maps.LatLng(targetLocation.lat, targetLocation.lng)
+            );
+            const startBtn1 = document.getElementById('start-btn');
+            if (startBtn1.disabled == true) {
+                if (distance > 350) {
+                    updateStatus(challenge, "#28a745"); // Green color for challenge
+                } else if (distance <= 350 && distance > 80) {
+                    updateStatus(hint, "#007bff"); // Blue color for hint
+                } else if (distance <= 80) {
+                    updateStatus(success, "#ff9800", true); // Orange color with blink for success
+                    focusOnTarget();
+                }
+            }
+        }
+
+        function focusOnTarget() {
+            if (!bflagSuccess) {
+                bflagSuccess = true;
+
+                // Zoom in on the target location and center the map
+                map.setCenter(targetLocation);
+                map.setZoom(20);
+
+                // Adjust Street View to focus directly on the target
+                panorama.setPosition(targetLocation);
+                panorama.setPov({
+                    heading: 34, // Adjust this heading to match the direction towards the target
+                    pitch: 0,
+                    zoom: 1.5 // Slight zoom-in to focus on the target
+                });
+            }
+        }
+
+        function updateStatus(message, color, blink = false) {
+            const status = document.getElementById('status');
+            status.innerText = message;
+            status.style.backgroundColor = color; // Update background color
+            if (blink) {
+                status.classList.add('blink'); // Add blinking effect
+            } else {
+                status.classList.remove('blink'); // Remove blinking effect
+            }
+        }
+
+        function addNearbyLandmarks() {
+            const landmarks = [ 
+                { name: "Hula Lake", position: { lat: 33.10330726207427, lng: 35.60917134399414 } },
+                { name: "Birdwatching Station", position:  { lat: 33.09734800001598, lng: 35.61141014099121 }},
+                { name: "Birdwatching Station2", position:  { lat: 33.10824080272955, lng: 35.610809326171875 }}
+            ];
+
+            landmarks.forEach(landmark => {
+                new google.maps.Marker({
+                    position: landmark.position,
+                    map: map,
+                    title: landmark.name
+                });
+            });
+        }
+
+        // Add event listeners to show/hide the status bar on scroll
+        window.addEventListener('scroll', function() {
+            const statusBar = document.getElementById('status');
+            if (window.scrollY > 50) {
+                statusBar.style.opacity = 1;
+            } else {
+                statusBar.style.opacity = 1;
+            }
+        });
+    </script>
+</body>
+</html>

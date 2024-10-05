@@ -25,6 +25,12 @@ def index_shonbrunn(request):
 def user_mode_shonbrunn(request):
     return render(request, 'shop/index_shonbrunn/user-mode.html')
 
+def index_hula(request):
+    return render(request, 'shop/index_hula.html')
+
+def user_mode_hula(request):
+    return render(request, 'shop/index_hula/user-mode.html')
+
 def index_api(request):
     return render(request, 'shop/index_api.html')
 

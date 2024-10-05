@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quest Admin Mode (Default: Hula Valley)</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            scroll-behavior: smooth;
+        }
+        #map {
+            height: 50%;
+            width: 100%;
+        }
+        #form-container {
+            padding: 20px;
+            text-align: center;
+            background-color: #222;
+            color: white;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease-in-out;
+        }
+        .save-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="form-container">
+        <h2>Admin Mode: Set Up Your First Clue of the Quest</h2>
+        <p>Click on the map to set the new quest location. (Default: Hula Valley) </p>
+        <input type="text" id="initialClue" value="Your first clue: 'Wander through the natural beauty, where the wetlands hold the secrets of nature.' Can you find me? Click 'Start,' and then move the Street View marker to the quest location." /><br>
+        <input type="text" id="challenge" value="Challenge: Explore the Hula Valley to find the hidden treasure among the natural wonders. Approach the correct area to unlock your next clue." /><br>
+        <input type="text" id="hint" value="Hint: If you’re close, you will be surrounded by vibrant wildlife and peaceful water bodies." /><br>
+        <input type="text" id="success" value="Bingo! You've found the hidden location in the Hula Valley. Congratulations on unlocking the next clue!" /><br>
+        <button class="save-btn" onclick="saveQuest()">Next: Go to User Mode</button>
+    </div>
+    <div id="map"></div>
+
+    <!-- Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuImtLS1A2933QJOZ-ScwDVeEfDYF9aSw&callback=initMap"></script>
+
+    <script>
+        let map;
+        let targetMarker;
+        // 33.09734800001598 , 35.61141014099121
+        // 33.10076001010768 , 35.608534812927246
+
+        let targetLocation = { lat: 33.10076001010768, lng: 35.608534812927246 }; // Default location: Hula Valley Nature Reserve
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: targetLocation,
+                zoom: 16,
+                mapTypeId: 'roadmap'
+            });
+
+            // Add red marker for the target location
+            targetMarker = new google.maps.Marker({
+                position: targetLocation,
+                map: map,
+                icon: {
+                    url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Red marker icon
+                    scaledSize: new google.maps.Size(40, 40) // Resize icon
+                }
+            });
+
+            map.addListener('click', function(event) {
+                targetLocation = { lat: event.latLng.lat(), lng: event.latLng.lng() };
+                // 33.10076001010768 , 35.608534812927246
+                alert(targetLocation.lat +' , ' + targetLocation.lng);
+                targetMarker.setPosition(targetLocation);
+            });
+        }
+
+        function saveQuest() {
+            const initialClue = document.getElementById('initialClue').value;
+            const challenge = document.getElementById('challenge').value;
+            const hint = document.getElementById('hint').value;
+            const success = document.getElementById('success').value;
+
+            const queryParams = new URLSearchParams({
+                lat: targetLocation.lat,
+                lng: targetLocation.lng,
+                initialClue: initialClue,
+                challenge: challenge,
+                hint: hint,
+                success: success
+            });
+
+            window.location.href = `user-mode.html?${queryParams.toString()}`;
+        }
+    </script>
+</body>
+</html>
