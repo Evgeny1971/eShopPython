@@ -202,7 +202,7 @@
                     updateStatus(challenge, "#28a745"); // Green color for challenge
                 } else if (distance <= 350 && distance > 80) {
                     updateStatus(hint, "#007bff"); // Blue color for hint
-                } else if (distance <= 80) {
+                } else if (distance <= 200) {
                     updateStatus(success, "#ff9800", true); // Orange color with blink for success
                     focusOnTarget();
                 }

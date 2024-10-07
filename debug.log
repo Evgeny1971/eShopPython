@@ -4142,3 +4142,12 @@ django.template.exceptions.TemplateDoesNotExist: shop/index_shonbrunn/user-mode.
 [2024-09-08 07:33:22] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
 [2024-09-08 07:33:23] INFO [django.utils.autoreload:266] /home/evgenyv/eshop/shop/views.py changed, reloading.
 [2024-09-08 07:33:23] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-10-05 16:52:20] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-10-05 16:52:30] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-10-05 16:52:45] WARNING [django.request:241] Not Found: /index_hula.html
+[2024-10-07 08:13:23] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-10-07 09:07:41] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-10-07 09:09:00] WARNING [django.request:241] Not Found: /favicon.ico
+[2024-10-07 09:14:02] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader
+[2024-10-07 09:27:36] WARNING [django.request:241] Not Found: /index_hula/user-model
+[2024-10-07 09:51:50] INFO [django.utils.autoreload:668] Watching for file changes with StatReloader

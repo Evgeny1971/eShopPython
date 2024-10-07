@@ -66,7 +66,7 @@
         // 33.09734800001598 , 35.61141014099121
         // 33.10076001010768 , 35.608534812927246
 
-        let targetLocation = { lat: 33.10076001010768, lng: 35.608534812927246 }; // Default location: Hula Valley Nature Reserve
+        let targetLocation = { lat: 33.09734800001598 , lng: 35.61141014099121 }; // Default location: Hula Valley Nature Reserve
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
@@ -88,7 +88,7 @@
             map.addListener('click', function(event) {
                 targetLocation = { lat: event.latLng.lat(), lng: event.latLng.lng() };
                 // 33.10076001010768 , 35.608534812927246
-                alert(targetLocation.lat +' , ' + targetLocation.lng);
+                //alert(targetLocation.lat +' , ' + targetLocation.lng);
                 targetMarker.setPosition(targetLocation);
             });
         }
